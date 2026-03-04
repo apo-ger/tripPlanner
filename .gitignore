@@ -19,7 +19,7 @@ dist/
 HEAD
 objects
 refs
-hooks
+/hooks
 config
 
 # Claude Code
