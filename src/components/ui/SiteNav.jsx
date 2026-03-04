@@ -1,48 +1,31 @@
-// ABOUTME: Sticky top navigation bar with destination jump links.
-// ABOUTME: Destination links scroll to corresponding card sections.
+// ABOUTME: Sticky top navigation bar with chapter jump links.
+// ABOUTME: Highlights the active chapter based on scroll position.
 
-import { useState, useEffect } from 'react'
-import { destinations } from '../../data/destinations'
+import { chapters } from '../../data/destinations'
+import { useScrollStore } from '../../stores/useScrollStore'
 
 export default function SiteNav() {
-  const [activeDestId, setActiveDestId] = useState(null)
+  const activeChapter = useScrollStore((s) => s.activeChapter)
 
-  useEffect(() => {
-    const observers = []
-    destinations.forEach((d) => {
-      const el = document.querySelector(`[data-dest-id="${d.id}"]`)
-      if (!el) return
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveDestId(d.id)
-        },
-        { threshold: 0.3, rootMargin: '-20% 0px -50% 0px' }
-      )
-      obs.observe(el)
-      observers.push(obs)
-    })
-    return () => observers.forEach((obs) => obs.disconnect())
-  }, [])
-
-  const scrollToDest = (id) => {
-    const el = document.querySelector(`[data-dest-id="${id}"]`)
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  const scrollToChapter = (id) => {
+    const el = document.querySelector(`[data-chapter-id="${id}"]`)
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   return (
     <nav className="site-nav">
-      <div className="site-nav-destinations">
-        {destinations.map((d) => (
+      <div className="site-nav-chapters">
+        {chapters.map((ch) => (
           <button
-            key={d.id}
-            className={`site-nav-dest-link${activeDestId === d.id ? ' active' : ''}`}
-            onClick={() => scrollToDest(d.id)}
+            key={ch.id}
+            className={`site-nav-chapter-link${activeChapter === ch.id ? ' active' : ''}`}
+            onClick={() => scrollToChapter(ch.id)}
           >
             <span
-              className="site-nav-dest-dot"
-              style={{ background: d.accentFrom }}
+              className="site-nav-chapter-dot"
+              style={{ background: ch.accentFrom }}
             />
-            {d.name}
+            {ch.name}
           </button>
         ))}
       </div>

@@ -1,8 +1,11 @@
+// ABOUTME: Trip chapters — one per destination in chronological order.
+// ABOUTME: Each chapter has editorial sections, map coordinates, and accent colors.
+
 import { colors } from './config'
 
 const { accent } = colors
 
-export const destinations = [
+export const chapters = [
   {
     id: 'kutaisi',
     name: 'Kutaisi',
@@ -13,6 +16,7 @@ export const destinations = [
     accentFrom: accent.kutaisi.from,
     accentTo: accent.kutaisi.to,
     status: 'researched',
+    mapView: { center: [42.268, 42.695], zoom: 13 },
     sections: [
       {
         title: 'Culture & Sights', icon: '🗿', items: [
@@ -58,37 +62,6 @@ export const destinations = [
     ],
   },
   {
-    id: 'route-day',
-    name: 'The Drive',
-    sub: 'Kutaisi → Gudauri · Georgian Military Highway',
-    dates: 'Mar 6',
-    nights: 0,
-    emoji: '🚗',
-    accentFrom: accent.drive.from,
-    accentTo: accent.drive.to,
-    status: 'researched',
-    sections: [
-      {
-        title: 'Recommended Stops', icon: '📍', items: [
-          { n: 'Uplistsikhe Cave City', d: '3000-year-old rock-hewn town. ~15km detour off main road near Gori. At peak: 20,000 inhabitants, theatre, pharmacy, pagan temples carved into rock above Mtkvari River. Budget 1–1.5 hours. Entry ~7 GEL.', p: 'must' },
-          { n: 'Gori', d: "Stalin's birthplace. Museum with personal items + his train carriage. Gori Fortress on hilltop with views. Interest-dependent — skip if not your thing.", p: 'opt' },
-          { n: 'Mtskheta — Jvari Monastery', d: "6th-century on cliff edge. Panoramic views over confluence of Mtkvari and Aragvi rivers. One of the earliest cross-in-square churches in Georgia. Free, 20min.", p: 'must' },
-          { n: 'Mtskheta — Svetitskhoveli Cathedral', d: "11th-century, spiritual heart of Georgia. Where kings were crowned and buried. Christ's robe allegedly buried beneath. UNESCO. Free, 20min.", p: 'must' },
-          { n: 'Ananuri Fortress', d: 'Directly on Georgian Military Highway — no detour needed. 17th-century fortress with two churches overlooking turquoise Zhinvali Reservoir. Stunning photo stop. 20-30min.', p: 'must' },
-          { n: 'Zhinvali Reservoir viewpoints', d: 'Multiple pulloffs along Military Highway. Turquoise water against mountains. Free, just stop the car.', p: 'rec' },
-        ],
-      },
-      {
-        title: 'Route Info', icon: 'ℹ️', items: [
-          { n: 'Total distance', d: '~292km / 4hrs direct. With stops: plan 7-8 hours.', p: 'info' },
-          { n: 'Road condition', d: 'Main highway is good. Georgian Military Highway section is mountain road — scenic but windy. In March, may have snow/ice on higher sections near Gudauri.', p: 'info' },
-          { n: 'Suggested order', d: 'Kutaisi → Uplistsikhe → lunch in Gori → Mtskheta (Jvari + Svetitskhoveli) → Ananuri → Gudauri.', p: 'info' },
-          { n: 'Transport options', d: 'GoTrip.ge for flexible private driver (~$35-65 per car). Georgian Bus runs Kutaisi Airport → Gudauri in winter (60 GEL one-way, ~6hrs). Marshrutka via Tbilisi Didube (~16 GEL, 6.5hrs, no stops).', p: 'info' },
-        ],
-      },
-    ],
-  },
-  {
     id: 'gudauri',
     name: 'Gudauri',
     sub: 'Ski Resort · Greater Caucasus',
@@ -98,14 +71,22 @@ export const destinations = [
     accentFrom: accent.gudauri.from,
     accentTo: accent.gudauri.to,
     status: 'not-started',
+    mapView: { center: [42.457, 44.474], zoom: 12 },
     sections: [
+      {
+        title: 'Getting There', icon: '🚗', items: [
+          { n: 'Route', d: 'Kutaisi → Surami Pass → Khashuri → Tbilisi bypass → Georgian Military Highway → Gudauri. ~290km, 5–6hrs with stops.', p: 'info' },
+          { n: 'Road condition', d: 'Main highway is good. Military Highway section is mountain road — scenic but windy. In March, may have snow/ice on higher sections near Gudauri.', p: 'info' },
+          { n: 'Ananuri Fortress', d: '17th-century fortress with two churches overlooking turquoise Zhinvali Reservoir. Directly on Military Highway — no detour needed. 20–30 min.', p: 'must' },
+          { n: 'Transport options', d: 'GoTrip.ge for flexible private driver (~$35-65 per car). Georgian Bus runs Kutaisi Airport → Gudauri in winter (60 GEL one-way, ~6hrs). Marshrutka via Tbilisi Didube (~16 GEL, 6.5hrs, no stops).', p: 'info' },
+        ],
+      },
       {
         title: 'To Research', icon: '📋', items: [
           { n: 'Ski passes & pricing', d: '', p: 'tbd' },
           { n: 'Equipment rental', d: '', p: 'tbd' },
           { n: 'Accommodation', d: '', p: 'tbd' },
           { n: 'Restaurants & après-ski', d: '', p: 'tbd' },
-          { n: 'Transport from Kutaisi', d: '', p: 'tbd' },
           { n: 'Off-piste / freeride options', d: '', p: 'tbd' },
         ],
       },
@@ -121,6 +102,7 @@ export const destinations = [
     accentFrom: accent.tbilisi.from,
     accentTo: accent.tbilisi.to,
     status: 'not-started',
+    mapView: { center: [41.715, 44.827], zoom: 12 },
     sections: [
       {
         title: 'Climbing & Gear', icon: '🧗', items: [

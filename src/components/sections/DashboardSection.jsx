@@ -1,23 +1,25 @@
-// ABOUTME: Split-view dashboard with a sticky Leaflet map, route tabs, and scrollable stop list.
-// ABOUTME: Markers highlight when the corresponding stop card is selected.
+// ABOUTME: Sticky Leaflet map that shows the trip route and zooms per active chapter.
+// ABOUTME: Markers highlight when a stop is selected from the chapter content below.
 
 import { useRef, useEffect, useState, useCallback } from 'react'
-import { routes } from '../../data/routes'
+import { route } from '../../data/routes'
+import { chapters } from '../../data/destinations'
 import { useScrollStore } from '../../stores/useScrollStore'
 
 // Georgia bounding box with padding
 const GEORGIA_BOUNDS = [[40.8, 39.8], [43.8, 46.8]]
 
+// Full-route view used as initial map state
+const ROUTE_VIEW = { center: [42.1, 43.8], zoom: 7 }
+
 export default function DashboardSection() {
-  const activeRouteId = useScrollStore((s) => s.activeRouteId)
-  const setActiveRoute = useScrollStore((s) => s.setActiveRoute)
-  const route = routes.find((r) => r.id === activeRouteId) || routes[0]
+  const activeChapter = useScrollStore((s) => s.activeChapter)
+  const activeStopName = useScrollStore((s) => s.activeStopName)
   const mapRef = useRef(null)
   const mapInstanceRef = useRef(null)
   const layerGroupRef = useRef(null)
   const markersRef = useRef([])
   const [leafletReady, setLeafletReady] = useState(!!window.L)
-  const [activeStopIdx, setActiveStopIdx] = useState(null)
 
   // Load Leaflet once
   useEffect(() => {
@@ -76,7 +78,7 @@ export default function DashboardSection() {
     }
   }, [leafletReady])
 
-  // Build icon HTML for a marker
+  // Build icon for a marker
   const buildIcon = useCallback((stop, isActive) => {
     const L = window.L
     if (!L) return null
@@ -117,7 +119,7 @@ export default function DashboardSection() {
     })
   }, [])
 
-  // Redraw markers + polyline when route changes
+  // Draw route markers + polyline (once)
   const drawRoute = useCallback(() => {
     const L = window.L
     const map = mapInstanceRef.current
@@ -127,9 +129,9 @@ export default function DashboardSection() {
     group.clearLayers()
     markersRef.current = []
 
-    const { stops } = route
+    const setActiveStop = useScrollStore.getState().setActiveStop
 
-    stops.forEach((stop, idx) => {
+    route.stops.forEach((stop) => {
       const icon = buildIcon(stop, false)
       const marker = L.marker([stop.lat, stop.lng], { icon }).addTo(group)
 
@@ -141,12 +143,12 @@ export default function DashboardSection() {
         })
       }
 
-      marker.on('click', () => setActiveStopIdx(idx))
+      marker.on('click', () => setActiveStop(stop.name))
       markersRef.current.push(marker)
     })
 
     // Polyline
-    const coords = stops.map((s) => [s.lat, s.lng])
+    const coords = route.stops.map((s) => [s.lat, s.lng])
     L.polyline(coords, {
       color: '#1A1612',
       weight: 2,
@@ -154,102 +156,45 @@ export default function DashboardSection() {
       dashArray: '6 4',
     }).addTo(group)
 
-    // Fit bounds
-    const bounds = L.latLngBounds(coords)
-    map.fitBounds(bounds, { padding: [40, 40], maxZoom: 9 })
-  }, [route, buildIcon])
+    map.setView(ROUTE_VIEW.center, ROUTE_VIEW.zoom)
+  }, [buildIcon])
 
   useEffect(() => {
     drawRoute()
-    setActiveStopIdx(null)
   }, [drawRoute, leafletReady])
 
-  // Update marker icons when active stop changes
+  // Fly to chapter-specific map view when active chapter changes
   useEffect(() => {
-    const stops = route.stops
-    markersRef.current.forEach((marker, idx) => {
-      const icon = buildIcon(stops[idx], activeStopIdx === idx)
+    const map = mapInstanceRef.current
+    if (!map) return
+
+    const chapter = chapters.find((c) => c.id === activeChapter)
+    if (chapter?.mapView) {
+      map.flyTo(chapter.mapView.center, chapter.mapView.zoom, { duration: 1.2 })
+    }
+  }, [activeChapter])
+
+  // Highlight marker + pan when active stop changes
+  useEffect(() => {
+    const map = mapInstanceRef.current
+    if (!map) return
+
+    route.stops.forEach((stop, idx) => {
+      const marker = markersRef.current[idx]
+      if (!marker) return
+      const icon = buildIcon(stop, stop.name === activeStopName)
       if (icon) marker.setIcon(icon)
     })
-  }, [activeStopIdx, route, buildIcon])
 
-  // Pan to stop when clicked in the list
-  const handleStopClick = (idx) => {
-    const newIdx = activeStopIdx === idx ? null : idx
-    setActiveStopIdx(newIdx)
-    const stop = route.stops[idx]
-    if (mapInstanceRef.current && stop && newIdx !== null) {
-      mapInstanceRef.current.panTo([stop.lat, stop.lng], { animate: true })
+    if (activeStopName) {
+      const stop = route.stops.find((s) => s.name === activeStopName)
+      if (stop) {
+        map.panTo([stop.lat, stop.lng], { animate: true })
+      }
     }
-  }
+  }, [activeStopName, buildIcon])
 
   return (
-    <section className="dashboard-section" data-section="dashboard">
-      <div className="dashboard-route-tabs">
-        {routes.map((r) => (
-          <button
-            key={r.id}
-            className={`route-tab${activeRouteId === r.id ? ' active' : ''}`}
-            onClick={() => setActiveRoute(r.id)}
-          >
-            <span className="route-tab-name">{r.name}</span>
-            <span className="route-tab-meta">{r.distance}</span>
-          </button>
-        ))}
-      </div>
-
-      <div className="dashboard-route-info">
-        <span className="dashboard-route-tagline">{route.tagline}</span>
-        <span className="dashboard-route-meta">{route.distance} · {route.duration}</span>
-      </div>
-
-      <div className="dashboard-split">
-        <div className="map-panel" ref={mapRef} />
-
-        <div className="content-panel" data-lenis-prevent>
-          <div className="stop-list">
-            {route.stops.map((stop, idx) => (
-              <div
-                key={`${route.id}-${idx}`}
-                className={`stop-card${activeStopIdx === idx ? ' active' : ''}`}
-                onClick={() => handleStopClick(idx)}
-              >
-                <div className="stop-card-header">
-                  <span className="stop-card-index">{idx + 1}</span>
-                  <span
-                    className={`stop-card-type-dot${stop.type === 'destination' ? ' destination' : ''}`}
-                    style={{ background: stop.type === 'destination' ? '#1A1612' : '#B0AAA2' }}
-                  />
-                  <span className="stop-card-name">{stop.name}</span>
-                  <span className="stop-card-duration">{stop.duration}</span>
-                </div>
-
-                {activeStopIdx === idx && (
-                  <div className="stop-card-detail">
-                    <p className="stop-card-desc">{stop.description}</p>
-                    {stop.links.length > 0 && (
-                      <div className="stop-card-links">
-                        {stop.links.map((link, i) => (
-                          <a
-                            key={i}
-                            className="stop-card-link"
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {link.label} ↗
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
+    <div className="trip-map" ref={mapRef} />
   )
 }

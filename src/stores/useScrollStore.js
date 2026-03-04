@@ -1,5 +1,5 @@
-// ABOUTME: Zustand store for scroll state, mouse position, and active driving route.
-// ABOUTME: Consumed by grain overlay, navigation, and dashboard components.
+// ABOUTME: Zustand store for scroll state, mouse position, and active trip chapter.
+// ABOUTME: Consumed by grain overlay, navigation, map, and chapter components.
 
 import { create } from 'zustand'
 
@@ -9,9 +9,11 @@ export const useScrollStore = create((set) => ({
   activeSection: 'hero',
   mouseX: 0,
   mouseY: 0,
-  activeRouteId: 'historical',
+  activeChapter: 'kutaisi',
+  activeStopName: null,
   setScroll: (progress, velocity) => set({ scrollProgress: progress, scrollVelocity: velocity }),
   setActiveSection: (section) => set({ activeSection: section }),
   setMouse: (x, y) => set({ mouseX: x, mouseY: y }),
-  setActiveRoute: (routeId) => set({ activeRouteId: routeId }),
+  setActiveChapter: (chapterId) => set({ activeChapter: chapterId }),
+  setActiveStop: (stopName) => set({ activeStopName: stopName }),
 }))

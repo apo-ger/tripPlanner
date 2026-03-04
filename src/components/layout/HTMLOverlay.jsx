@@ -1,5 +1,5 @@
 // ABOUTME: Top-level HTML layout that stacks all page sections in scroll order.
-// ABOUTME: SiteNav is sticky; hero, dashboard, destinations, and footer scroll beneath it.
+// ABOUTME: SiteNav is sticky; hero, trip map + chapters, and footer scroll beneath it.
 
 import SiteNav from '../ui/SiteNav'
 import HeroSection from '../sections/HeroSection'
@@ -12,8 +12,10 @@ export default function HTMLOverlay() {
     <div className="html-overlay">
       <SiteNav />
       <HeroSection />
-      <DashboardSection />
-      <DestinationSection />
+      <div className="trip-container">
+        <DashboardSection />
+        <DestinationSection />
+      </div>
       <FooterSection />
     </div>
   )

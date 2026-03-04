@@ -1,23 +1,38 @@
-// ABOUTME: Renders all destination deep-dive cards below the dashboard.
-// ABOUTME: Editorial layout with heading and GSAP scroll animations on each card.
+// ABOUTME: Renders trip chapters (Kutaisi, Gudauri, Tbilisi) that scroll below the sticky map.
+// ABOUTME: IntersectionObserver detects the active chapter and updates the store.
 
-import { destinations } from '../../data/destinations'
+import { useEffect } from 'react'
+import { chapters } from '../../data/destinations'
+import { useScrollStore } from '../../stores/useScrollStore'
 import DestCard from '../ui/DestCard'
 
 export default function DestinationSection() {
+  const setActiveChapter = useScrollStore((s) => s.setActiveChapter)
+
+  useEffect(() => {
+    const observers = []
+    chapters.forEach((ch) => {
+      const el = document.querySelector(`[data-chapter-id="${ch.id}"]`)
+      if (!el) return
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveChapter(ch.id)
+        },
+        { threshold: 0.3, rootMargin: '-20% 0px -50% 0px' }
+      )
+      obs.observe(el)
+      observers.push(obs)
+    })
+    return () => observers.forEach((obs) => obs.disconnect())
+  }, [setActiveChapter])
+
   return (
-    <section className="section-container" data-section="destinations">
-      <div className="destinations-stack">
-        <div>
-          <h2 className="destinations-heading">Destinations</h2>
-          <p className="destinations-subheading">
-            Deep-dive into each stop — sights, food, gear, and practical tips.
-          </p>
+    <div className="trip-chapters">
+      {chapters.map((ch) => (
+        <div key={ch.id} className="chapter-wrapper" data-chapter-id={ch.id}>
+          <DestCard dest={ch} />
         </div>
-        {destinations.map((d) => (
-          <DestCard key={d.id} dest={d} />
-        ))}
-      </div>
-    </section>
+      ))}
+    </div>
   )
 }
