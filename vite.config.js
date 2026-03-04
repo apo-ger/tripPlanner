@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import glsl from 'vite-plugin-glsl'
 
 export default defineConfig({
-  base: '/tripPlanner/',
+  base: '/',
   plugins: [react(), glsl()],
   build: {
     outDir: 'dist',
