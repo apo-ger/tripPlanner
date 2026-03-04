@@ -1,14 +1,10 @@
-// ABOUTME: Sticky top navigation bar with route selector tabs and destination jump links.
-// ABOUTME: Route tabs switch the active driving route; destination links scroll to card sections.
+// ABOUTME: Sticky top navigation bar with destination jump links.
+// ABOUTME: Destination links scroll to corresponding card sections.
 
 import { useState, useEffect } from 'react'
-import { routes } from '../../data/routes'
 import { destinations } from '../../data/destinations'
-import { useScrollStore } from '../../stores/useScrollStore'
 
 export default function SiteNav() {
-  const activeRouteId = useScrollStore((s) => s.activeRouteId)
-  const setActiveRoute = useScrollStore((s) => s.setActiveRoute)
   const [activeDestId, setActiveDestId] = useState(null)
 
   useEffect(() => {
@@ -35,18 +31,6 @@ export default function SiteNav() {
 
   return (
     <nav className="site-nav">
-      <div className="site-nav-routes">
-        {routes.map((r) => (
-          <button
-            key={r.id}
-            className={`site-nav-route-tab${activeRouteId === r.id ? ' active' : ''}`}
-            onClick={() => setActiveRoute(r.id)}
-          >
-            {r.name}
-          </button>
-        ))}
-      </div>
-
       <div className="site-nav-destinations">
         {destinations.map((d) => (
           <button

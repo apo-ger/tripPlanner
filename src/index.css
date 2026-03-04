@@ -105,41 +105,13 @@ html.lenis, html.lenis body { height: auto; }
   z-index: 50;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 10px 28px;
   background: rgba(250, 250, 248, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-light);
-}
-
-.site-nav-routes {
-  display: flex;
-  gap: 2px;
-}
-
-.site-nav-route-tab {
-  padding: 6px 14px;
-  border-radius: 6px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  transition: all 0.2s var(--ease-out);
   white-space: nowrap;
-}
-
-.site-nav-route-tab:hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: var(--text-secondary);
-}
-
-.site-nav-route-tab.active {
-  background: var(--text-primary);
-  color: #FFFFFF;
 }
 
 .site-nav-destinations {
@@ -251,6 +223,64 @@ html.lenis, html.lenis body { height: auto; }
   padding: 0 28px 60px;
 }
 
+.dashboard-route-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+.dashboard-route-tabs::-webkit-scrollbar { display: none; }
+
+.route-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.route-tab:hover {
+  border-color: var(--border-medium);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.route-tab.active {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.route-tab-name {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.route-tab.active .route-tab-name {
+  color: #FFFFFF;
+}
+
+.route-tab-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.route-tab.active .route-tab-meta {
+  color: rgba(255, 255, 255, 0.6);
+}
+
 .dashboard-route-info {
   display: flex;
   align-items: baseline;
@@ -334,6 +364,20 @@ html.lenis, html.lenis body { height: auto; }
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.stop-card-index {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-ghost);
+  min-width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.stop-card.active .stop-card-index {
+  color: var(--text-primary);
 }
 
 .stop-card-type-dot {
@@ -1020,7 +1064,6 @@ html.lenis, html.lenis body { height: auto; }
   .map-panel { height: 280px; min-height: 250px; }
 
   .site-nav { padding: 8px 14px; }
-  .site-nav-route-tab { padding: 5px 10px; font-size: 12px; }
 }
 
 @media (max-width: 390px) {
