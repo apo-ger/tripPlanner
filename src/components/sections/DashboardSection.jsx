@@ -126,7 +126,7 @@ export default function DashboardSection() {
   useEffect(() => {
     drawRoute()
     setActiveStopIdx(null)
-  }, [drawRoute])
+  }, [drawRoute, leafletReady])
 
   // Pan to stop when clicked in the list
   const handleStopClick = (idx) => {
