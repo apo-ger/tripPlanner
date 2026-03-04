@@ -1,0 +1,30 @@
+node_modules/
+dist/
+.playwright-cli/
+
+# IDE
+.idea
+.vscode
+
+# OS / shell config (home dir leakage)
+.bash_profile
+.bashrc
+.zshrc
+.zprofile
+.profile
+.gitconfig
+.ripgreprc
+
+# Bare git objects (shouldn't be in worktree root)
+HEAD
+objects
+refs
+hooks
+config
+
+# Claude Code
+.claude/
+
+# Misc
+*.log
+.DS_Store
