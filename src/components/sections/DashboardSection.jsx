@@ -170,6 +170,7 @@ export default function DashboardSection() {
 
     const chapter = chapters.find((c) => c.id === activeChapter)
     if (chapter?.mapView) {
+      map.stop()
       map.flyTo(chapter.mapView.center, chapter.mapView.zoom, { duration: 1.2 })
     }
   }, [activeChapter])
@@ -189,6 +190,7 @@ export default function DashboardSection() {
     if (activeStopName) {
       const stop = route.stops.find((s) => s.name === activeStopName)
       if (stop) {
+        map.stop()
         map.panTo([stop.lat, stop.lng], { animate: true })
       }
     }
