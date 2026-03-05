@@ -82,11 +82,26 @@ export const chapters = [
         ],
       },
       {
+        title: 'Ski Passes', icon: '🎟️', items: [
+          { n: 'Daily pass', d: '70 GEL adult / 35 GEL child (6–12). Under 6 free. Reusable card: 5 GEL deposit (refundable).', p: 'info' },
+          { n: '6-day Multicard', d: '340 GEL adult (~57/day). Gudauri only. Requires ID. Non-consecutive — use any 6 days in the season.', p: 'must' },
+          { n: '7-day Multiski', d: '370 GEL (~53/day). Works at ALL Georgian resorts (Bakuriani, Goderdzi, Tetnuldi, Hatsvali). Any 7 days in season.', p: 'rec' },
+          { n: 'Season pass', d: '655 GEL (~$243). All resorts, unlimited days.', p: 'info' },
+          { n: 'Where to buy', d: 'Ticket offices at base of all lower lifts. Online: TKT.GE, BILETEBI.GE, SKIPASS.GE, Super App, MOUNT App. Cash (GEL) or Visa/MC.', p: 'info' },
+          { n: '⚠️ No insurance', d: 'Insurance is no longer included in ski passes. Arrange separately.', p: 'check' },
+        ],
+      },
+      {
+        title: 'Equipment Rental', icon: '🎿', items: [
+          { n: 'SkiGeorgia', d: '3 locations across resort. ~50 GEL/day basic ski/board set (boots + board/skis + poles). Damage waiver included. Pre-book online at skigeorgia.com.', p: 'must' },
+          { n: 'Multi-day savings', d: 'Traveler-reported: 205 GEL for 4 days (skis + boots + poles) = ~51 GEL/day. Request multi-day quote directly — not listed online.', p: 'rec' },
+          { n: 'Premium gear', d: '80–120 GEL/day for top brands (Nordica, Rossignol). Hotel Carpe Diem has largest shop — brand-new gear at 120 GEL tier.', p: 'info' },
+          { n: 'Extras', d: 'Helmet: ~20 GEL/day. Clothing (jacket/pants): 15–25 GEL/item. Freeride / avalanche gear available at some shops.', p: 'info' },
+          { n: '💡 Bring gloves', d: 'Rental shops frequently run out of gloves. Bring your own.', p: 'rec' },
+        ],
+      },
+      {
         title: 'To Research', icon: '📋', items: [
-          { n: 'Ski passes & pricing', d: '', p: 'tbd' },
-          { n: 'Equipment rental', d: '', p: 'tbd' },
-          { n: 'Accommodation', d: '', p: 'tbd' },
-          { n: 'Restaurants & après-ski', d: '', p: 'tbd' },
           { n: 'Off-piste / freeride options', d: '', p: 'tbd' },
         ],
       },
