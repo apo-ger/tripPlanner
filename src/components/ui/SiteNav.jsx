@@ -6,8 +6,10 @@ import { useScrollStore } from '../../stores/useScrollStore'
 
 export default function SiteNav() {
   const activeChapter = useScrollStore((s) => s.activeChapter)
+  const setActiveChapter = useScrollStore((s) => s.setActiveChapter)
 
   const scrollToChapter = (id) => {
+    setActiveChapter(id)
     const el = document.querySelector(`[data-chapter-id="${id}"]`)
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }

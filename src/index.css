@@ -232,8 +232,12 @@ html.lenis, html.lenis body { height: auto; }
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--border-light);
-  background: var(--bg-mid);
+  background: transparent;
   margin-bottom: 24px;
+}
+
+.chapter-wrapper {
+  scroll-margin-top: calc(48px + 35vh + 32px);
 }
 
 .trip-chapters {
