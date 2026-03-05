@@ -44,13 +44,7 @@ function FlagMesh() {
 
 export default function GeorgianFlag() {
   return (
-    <div style={{
-      width: 200,
-      height: 130,
-      borderRadius: 10,
-      overflow: 'hidden',
-      boxShadow: '0 8px 28px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04)',
-    }}>
+    <div style={{ width: 200, height: 130 }}>
       <Canvas
         camera={{ position: [0, 0, 3], fov: 40 }}
         dpr={[1, 2]}
