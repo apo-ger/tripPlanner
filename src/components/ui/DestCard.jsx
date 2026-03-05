@@ -4,12 +4,11 @@
 import { useState, useMemo } from 'react'
 import { statusLabels } from '../../data/config'
 import Section from './Section'
-import { useFadeIn } from '../../hooks/useScrollTrigger'
 import { useScrollStore } from '../../stores/useScrollStore'
 
 export default function DestCard({ dest }) {
   const setActiveChapter = useScrollStore((s) => s.setActiveChapter)
-  const [expanded, setExpanded] = useState(dest.status === 'researched')
+  const [expanded, setExpanded] = useState(false)
   const st = statusLabels[dest.status]
   const grad = `linear-gradient(135deg, ${dest.accentFrom}, ${dest.accentTo})`
 
@@ -21,11 +20,8 @@ export default function DestCard({ dest }) {
     return Math.round((done / allItems.length) * 100)
   }, [dest])
 
-  const ref = useFadeIn({ y: 40, duration: 0.8 })
-
   return (
     <div
-      ref={ref}
       className={`dest-card${expanded ? ' expanded' : ''}`}
       data-dest-id={dest.id}
       style={{
