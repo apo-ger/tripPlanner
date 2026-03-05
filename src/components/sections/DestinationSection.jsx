@@ -16,6 +16,8 @@ export default function DestinationSection() {
       if (!el) return
       const obs = new IntersectionObserver(
         ([entry]) => {
+          // Skip during nav-triggered scrolls to avoid fighting with flyTo
+          if (useScrollStore.getState().navScrolling) return
           if (entry.isIntersecting) setActiveChapter(ch.id)
         },
         { threshold: 0.3, rootMargin: '-20% 0px -50% 0px' }

@@ -7,11 +7,15 @@ import { useScrollStore } from '../../stores/useScrollStore'
 export default function SiteNav() {
   const activeChapter = useScrollStore((s) => s.activeChapter)
   const setActiveChapter = useScrollStore((s) => s.setActiveChapter)
+  const setNavScrolling = useScrollStore((s) => s.setNavScrolling)
 
   const scrollToChapter = (id) => {
     setActiveChapter(id)
+    setNavScrolling(true)
     const el = document.querySelector(`[data-chapter-id="${id}"]`)
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    // Re-enable observer after scroll settles
+    setTimeout(() => setNavScrolling(false), 1200)
   }
 
   return (
